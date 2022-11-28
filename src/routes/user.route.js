@@ -47,6 +47,13 @@ userRoute.put("/user/:id", (request, response) => {
 userRoute.post("/user", (request, response) => {
   const { nome, email, senha, data_nasc, cpf, cep, telefone, genero } =
     request.body;
+
+  const emailExiste =
+    dbMock.filter((usuario) => usuario.email === email).length > 0;
+  if (emailExiste) {
+    return response.status(400).json({ message: "E-mail já foi cadastrado" });
+  }
+
   const id = dbMock.length;
   dbMock.push({
     id,
